@@ -2,8 +2,7 @@ import java.io.*;
 import java.util.Scanner;
 
 public class SimpleNotepad {
-
-    private static final String FILE_NAME = "notes.txt";
+   private static final String FILE_NAME = "C:\\MyJava\\SimpleNotepad\\notes.txt";
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -21,12 +20,23 @@ public class SimpleNotepad {
             scanner.nextLine(); // 吸收換行符
 
             switch (choice) {
-                case 1 -> writeNote(scanner);
-                case 2 -> readNotes();
-                case 3 -> clearNotes();
-                case 0 -> System.out.println("已離開記事本。");
-                default -> System.out.println("無效選項，請重新輸入。");
+                case 1:
+                    writeNote(scanner);
+                    break;
+                case 2:
+                    readNotes();
+                    break;
+                case 3:
+                    clearNotes();
+                    break;
+                case 0:
+                    System.out.println("已離開記事本。");
+                    break;
+                default:
+                    System.out.println("無效選項，請重新輸入。");
+                    break;
             }
+
             System.out.println();
         } while (choice != 0);
 
