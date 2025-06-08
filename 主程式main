@@ -1,0 +1,75 @@
+import java.io.*;
+import java.util.Scanner;
+
+public class SimpleNotepad {
+
+    private static final String FILE_NAME = "notes.txt";
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int choice;
+
+        do {
+            System.out.println("=== 簡易記事本 ===");
+            System.out.println("1. 寫入記事");
+            System.out.println("2. 顯示全部記事");
+            System.out.println("3. 清空記事");
+            System.out.println("0. 離開");
+            System.out.print("請輸入選項：");
+
+            choice = scanner.nextInt();
+            scanner.nextLine(); // 吸收換行符
+
+            switch (choice) {
+                case 1 -> writeNote(scanner);
+                case 2 -> readNotes();
+                case 3 -> clearNotes();
+                case 0 -> System.out.println("已離開記事本。");
+                default -> System.out.println("無效選項，請重新輸入。");
+            }
+            System.out.println();
+        } while (choice != 0);
+
+        scanner.close();
+    }
+
+    private static void writeNote(Scanner scanner) {
+        System.out.print("請輸入記事內容：");
+        String note = scanner.nextLine();
+
+        try (FileWriter fw = new FileWriter(FILE_NAME, true);
+             BufferedWriter bw = new BufferedWriter(fw)) {
+            bw.write(note);
+            bw.newLine();
+            System.out.println("✅ 已成功寫入記事！");
+        } catch (IOException e) {
+            System.out.println("❌ 寫入失敗：" + e.getMessage());
+        }
+    }
+
+    private static void readNotes() {
+        System.out.println("=== 所有記事 ===");
+        try (BufferedReader br = new BufferedReader(new FileReader(FILE_NAME))) {
+            String line;
+            boolean hasContent = false;
+            while ((line = br.readLine()) != null) {
+                System.out.println(line);
+                hasContent = true;
+            }
+            if (!hasContent) {
+                System.out.println("(目前沒有記事)");
+            }
+        } catch (IOException e) {
+            System.out.println("❌ 讀取失敗：" + e.getMessage());
+        }
+    }
+
+    private static void clearNotes() {
+        try (PrintWriter pw = new PrintWriter(FILE_NAME)) {
+            pw.print(""); // 清空內容
+            System.out.println("🧹 已清空所有記事！");
+        } catch (IOException e) {
+            System.out.println("❌ 清空失敗：" + e.getMessage());
+        }
+    }
+}
